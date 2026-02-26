@@ -1,0 +1,28 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node src/server.js",
+    "dev": "nodemon src/server.js",
+    "migrate-make": "npx knex migrate:make",
+    "migrate-latest": "npx knex migrate:latest",
+    "migrate-rollback": "knex migrate:rollback --all",
+    "seed-data": "npx knex seed:run",
+    "build": "npm install && cd ../client && npm install && npm run build && cd ../server && rm -rf public && cp -r ../client/dist public && npm run migrate-latest && npm run seed-data"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "knex": "^3.1.0",
+    "pg": "^8.19.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
