@@ -7,18 +7,6 @@ import { LoginPage } from './LoginPage';
 
 function App() {
   const [bingoList, setBingoList] = useState([]);
-  const cash = [];
-  const testBingo = {
-    title: 'test',
-    src: 'https://placehold.jp/150x150.png',
-    stats: true,
-  };
-  const testBingoList = (limit) => {
-    for (let i = 0; i < limit; i++) {
-      cash.push(testBingo);
-    }
-  };
-  testBingoList(20);
 
   /* 初回レンダリング時にbingoのlistをGET */
   useEffect(() => {}, []);
