@@ -3,24 +3,34 @@ import './Bingo.css';
 export const Bingo = ({ bingoList, setBingoList }) => {
   const testBingo = {
     title: 'test',
-    src: 'https://placehold.jp/150x150.png',
-    stats: true,
+    src: 'https://placehold.jp/130x130.png',
+    status: false,
   };
-  const testBingoList = (limit) => {
-    for (let i = 0; i < limit; i++) {
-      console.log(i);
-    }
+
+  const changeStatus = (index) => {
+    const newArray = [...bingoList];
+    newArray[index].status = true;
+    setBingoList([...newArray]);
   };
-  testBingoList(20);
   return (
-    <div>
-      {bingoList.map((obj, index) => (
-        <div key={index} className="bingo-container">
-          <p>{obj.title}</p>
-          <img src={obj.src} alt="画像" />
-        </div>
-      ))}
-      <button onClick={() => setBingoList([...bingoList, testBingo])}></button>
-    </div>
+    <>
+      <div className="bingo-main">
+        {bingoList.map((obj, index) => (
+          <div
+            onClick={() => {
+              changeStatus(index);
+            }}
+            key={index}
+            className={`bingo-container ${obj.status && 'click'}`}
+          >
+            <img src={obj.src} alt="画像" />
+            <p className="bingo-title">{obj.title}</p>
+          </div>
+        ))}
+      </div>
+      <button onClick={() => setBingoList([...bingoList, testBingo])}>
+        test
+      </button>
+    </>
   );
 };

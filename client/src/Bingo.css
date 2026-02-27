@@ -1,0 +1,21 @@
+.bingo-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 5px;
+}
+
+.bingo-container {
+  border: solid 5px;
+  border-radius: 5px;
+}
+
+.bingo-container.click {
+  opacity: 0.5;
+}
+
+.bingo-title {
+  color: white;
+  background-color: #f2c057;
+  margin: 0px;
+  border-radius: 5px;
+}
