@@ -8,17 +8,20 @@ import {
 import { useEffect, useState } from "react";
 import { createContext, useContext } from "react";
 
+console.log(import.meta.env.VITE_FIREBASE_APIKEY);
+
 // Context生成(ログインに関する情報を管理)
 const AuthContext = createContext();
+
 // firebase の定義情報（各値はFirebaseのアプリ利用で取得した値を使用する）
 const firebaseConfig = {
-  apiKey: import.meta.env.FIREBASE_APIKEY,
-  authDomain: import.meta.env.FIREBASE_AUTODOMAIN,
-  projectId: import.meta.env.FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.FIREBASE_STORAGEBUCKET,
-  messagingSenderId: import.meta.env.FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.FIREBASE_APP_ID,
-  measurementId: import.meta.env.FIREBASE_MEASUREMENT_ID,
+  apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTODOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGEBUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
 // Initialize Firebase（firebase, GoogleAuth 初期設定）
