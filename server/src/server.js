@@ -1,12 +1,7 @@
-const express = require("express");
-const knex = require("./knex");
-const app = express();
+const { buildApp } = require("./app");
+
 const PORT = process.env.PORT || 3000;
-const path = require('path');
-
-app.use(express.json());
-
-app.use('/', express.static(path.join(__dirname, '../../client/dist')));
+const app = buildApp();
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
