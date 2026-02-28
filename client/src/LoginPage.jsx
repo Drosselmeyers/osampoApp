@@ -1,18 +1,97 @@
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthContextConsumer } from "./contexts/AuthContexts";
 
-export const LoginPage = () => {
-  // AuthContextConsumer からログインユーザ、ログイン・ログアウト処理取得
-  const { loginUser, login, logout } = AuthContextConsumer();
+export function LoginPage() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const { loginWithEmail, loginWithGoogle } = AuthContextConsumer();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+
+    try {
+      await loginWithEmail(email, password);
+      navigate("/");
+    } catch (err) {
+      console.error("Login error:", err);
+      if (err.code === "auth/invalid-credential") {
+        setError("メールアドレスまたはパスワードが正しくありません");
+      } else if (err.code === "auth/user-not-found") {
+        setError("アカウントが存在しません");
+      } else {
+        setError(err.message);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    setError("");
+    setLoading(true);
+    try {
+      await loginWithGoogle();
+      navigate("/");
+    } catch (err) {
+      console.error("Google login error:", err);
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
-      <div className="user_info">
-        <p className="user_name">
-          {loginUser ? loginUser.displayName : "ゲスト"}
-        </p>
-        <button className="login_btn" onClick={loginUser ? logout : login}>
-          {loginUser ? "logout" : "login"}
-        </button>
+      <div>
+        <h2>ログイン</h2>
+        {error && <div>{error}</div>}
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label htmlFor="email">メールアドレス</label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              disabled={loading}
+            />
+          </div>
+          <div>
+            <label htmlFor="password">パスワード</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              disabled={loading}
+            />
+          </div>
+          <button type="submit" disabled={loading}>
+            {loading ? "ログイン中..." : "ログイン"}
+          </button>
+        </form>
+
+        <div>
+          <hr />
+          <button onClick={handleGoogleLogin} disabled={loading} type="button">
+            Googleでログイン
+          </button>
+        </div>
+
+        <div>
+          <p>
+            アカウントをお持ちでないですか？ <Link to="/signup">新規登録</Link>
+          </p>
+        </div>
       </div>
     </>
   );
-};
+}
