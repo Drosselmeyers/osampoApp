@@ -7,7 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { createContext, useContext } from "react";
 import { auth, googleProvider } from "../config/firebase";
-import { fetchWithAuth } from "../config/apiClient";
+import apiClient from "../config/apiClient";
 
 // Context生成(ログインに関する情報を管理)
 const AuthContext = createContext();
@@ -30,12 +30,9 @@ export const AuthContextProvider = ({ children }) => {
     try {
       // BEにユーザ情報を保存（upsert）
       // 既存なら、サーバ側でupsertはせず、uidに紐づくuser情報を返す
-      await fetchWithAuth("/api/users", {
-        method: "POST",
-        body: JSON.stringify({
-          uid: result.user.uid,
-          email: result.user.email,
-        }),
+      await apiClient.post("/users", {
+        uid: result.user.uid,
+        email: result.user.email,
       });
     } catch (error) {
       // DB保存失敗時の処理
@@ -57,8 +54,9 @@ export const AuthContextProvider = ({ children }) => {
     return result.user;
   };
 
-  // Google登録処理（loginWithGoogleによって、既存か新規の検証をサーバ側で行い、
-  // 新規なら登録する処理を行っているので、loginWithGoogleを呼べばよい）
+  // Google登録処理
+  // loginWithGoogleでは既存か新規の検証をサーバ側で行い、新規なら登録する処理を行っているので、
+  // signUpWithGoogleでもloginWithGoogleを呼べばよい
   // 登録がすんだら、user情報が返ってくる
   const signUpWithGoogle = async () => {
     return await loginWithGoogle();
@@ -72,12 +70,9 @@ export const AuthContextProvider = ({ children }) => {
 
     try {
       // BEにユーザー情報を保存
-      await fetchWithAuth("/api/users", {
-        method: "POST",
-        body: JSON.stringify({
-          uid: result.user.uid,
-          email: result.user.email,
-        }),
+      await apiClient.post("/users", {
+        uid: result.user.uid,
+        email: result.user.email,
       });
     } catch (error) {
       // DB保存失敗 → Firebaseユーザーを削除してロールバック
