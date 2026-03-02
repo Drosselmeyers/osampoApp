@@ -44,7 +44,7 @@ function buildApp() {
   });
 
   // SPAフォールバック: すべてのAPI以外のルートをindex.htmlに
-  app.get("*", (req, res) => {
+  app.get(/^(?!\/api).*/, (req, res) => {
     res.sendFile(path.join(__dirname, "../public/index.html"));
   });
 
