@@ -5,19 +5,24 @@
 }
 
 .bingo-container {
-  border: solid 5px;
+  border: solid 5px #4c3f54;
   border-radius: 5px;
 }
 
 .bingo-container.click {
   opacity: 0.5;
+  background-color: #4c3f54;
 }
 
+.bingo-image {
+  background-color: white;
+  display: block;
+}
 .bingo-title {
-  color: #4c3f54;
+  color: black;
   background-color: #f2c057;
   margin: 0px;
-  border-radius: 5px;
+  font-weight: bold;
 }
 
 .reset-button {
