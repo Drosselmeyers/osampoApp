@@ -1,4 +1,4 @@
-function createUserController(service, repository) {
+function createBingoController(service, repository) {
   // 認証ユーザーの情報取得
   const getMe = async (req, res) => {
     try {
@@ -6,7 +6,7 @@ function createUserController(service, repository) {
       const user = await repository.findByUid(uid);
 
       if (!user) {
-        return res.status(404).json({ error: "ユーザが見つかりませんでした" });
+        return res.status(404).json({ error: 'ユーザが見つかりませんでした' });
       }
 
       res.status(200).json({ data: user });
@@ -36,4 +36,4 @@ function createUserController(service, repository) {
   return { getMe, upsert };
 }
 
-module.exports = { createUserController };
+module.exports = { createBingoController };

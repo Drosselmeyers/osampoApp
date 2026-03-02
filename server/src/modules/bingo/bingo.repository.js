@@ -1,7 +1,6 @@
-function createUserRepository(knex, table = "users") {
-  // uidで検索
-  const findByUid = async (uid) => {
-    return await knex(table).where({ uid }).first();
+function createBingoRepository(knex, table = 'bingo') {
+  const allData = async () => {
+    // const
   };
 
   // uidが存在しなければ作成（既存ユーザーは更新しない）
@@ -16,4 +15,4 @@ function createUserRepository(knex, table = "users") {
   return { findByUid, upsert };
 }
 
-module.exports = { createUserRepository };
+module.exports = { createBingoRepository };

@@ -1,10 +1,10 @@
-function createUserService(repository) {
+function createBingoService(repository) {
   const upsert = async (uid, email) => {
     if (!uid || !email) {
       return {
         ok: false,
         status: 400,
-        message: "uid/emailのいずれかが不足しています",
+        message: 'uid/emailのいずれかが不足しています',
       };
     }
     const user = await repository.upsert(uid, email);
@@ -14,4 +14,4 @@ function createUserService(repository) {
   return { upsert };
 }
 
-module.exports = { createUserService };
+module.exports = { createBingoService };
