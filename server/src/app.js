@@ -11,7 +11,8 @@ function buildApp() {
   const app = express();
 
   app.use(express.json());
-  app.use("/", express.static(path.join(__dirname, "../../client/dist")));
+  /* staticファイルの位置を指定 */
+  app.use("/", express.static(path.join(__dirname, "../public")));
 
   const userController = initUser(knex);
   app.use("/api", createUserRouter(userController));
@@ -45,8 +46,6 @@ function buildApp() {
   app.get(/^(?!\/api).*/, (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
   });
-  /* joさんのおまじない */
-  app.use("/", express.static(path.join(__dirname, "../../client/dist")));
   return app;
 }
 
