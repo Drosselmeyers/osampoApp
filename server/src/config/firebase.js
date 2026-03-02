@@ -1,9 +1,11 @@
 const admin = require("firebase-admin");
-// localで動かすとき
-// const serviceAccount = require("./osampoapp-b5967-firebase-adminsdk-fbsvc-0109fef0ed.json");
 
-//productionで動かすとき
-const serviceAccount = require("/etc/secrets/osampoapp-b5967-firebase-adminsdk-fbsvc-0109fef0ed.json");
+// NODE_ENVによってシークレットのパスを切り替え
+// renderにはNODE_ENV=productionと記載すること
+const serviceAccount =
+  process.env.NODE_ENV === "production"
+    ? require("/etc/secrets/osampoapp-b5967-firebase-adminsdk-fbsvc-0109fef0ed.json")
+    : require("./osampoapp-b5967-firebase-adminsdk-fbsvc-0109fef0ed.json");
 
 // firebaseAdmin SDK 初期化
 admin.initializeApp({
