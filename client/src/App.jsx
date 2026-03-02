@@ -8,19 +8,12 @@ import { SignUpPage } from "./SignUpPage";
 import { PostPage } from "./PostPage";
 
 function App() {
-  const [bingoList, setBingoList] = useState([]);
-
-  /* 初回レンダリング時にbingoのlistをGET */
-  useEffect(() => {}, []);
   return (
     <AuthContextProvider>
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route
-          path="/"
-          element={<Bingo bingoList={bingoList} setBingoList={setBingoList} />}
-        ></Route>
+        <Route path="/" element={<Bingo />}></Route>
         <Route path="/post" element={<PostPage />}></Route>
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
