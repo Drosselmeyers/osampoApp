@@ -26,3 +26,6 @@ yarn-error.log*
 
 # 環境変数
 .env.*
+
+# secret-key
+osampoapp-b5967-firebase-adminsdk-fbsvc-0109fef0ed.json

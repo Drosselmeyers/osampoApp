@@ -1,51 +1,87 @@
-import { initializeApp } from "firebase/app";
 import {
-  getAuth,
-  GoogleAuthProvider,
   signInWithPopup,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 import { useEffect, useState } from "react";
 import { createContext, useContext } from "react";
-
-console.log(import.meta.env.VITE_FIREBASE_APIKEY);
+import { auth, googleProvider } from "../config/firebase";
+import apiClient from "../config/apiClient";
 
 // Context生成(ログインに関する情報を管理)
 const AuthContext = createContext();
 
-// firebase の定義情報（各値はFirebaseのアプリ利用で取得した値を使用する）
-const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_APIKEY,
-  authDomain: import.meta.env.VITE_FIREBASE_AUTODOMAIN,
-  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_FIREBASE_STORAGEBUCKET,
-  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_FIREBASE_APP_ID,
-  measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
-};
-
-// Initialize Firebase（firebase, GoogleAuth 初期設定）
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-
-// AuthContextProvider (Provider)
 export const AuthContextProvider = ({ children }) => {
   // ログインユーザ
   const [loginUser, setLoginUser] = useState();
 
   // 起動時ログイン処理(既にログインしてる場合, ユーザ設定)
   useEffect(() => {
-    // auth 初期化時にログインユーザ設定
+    // auth初期化時にログインユーザ設定
     auth.onAuthStateChanged((user) => setLoginUser(user));
   }, []);
 
-  // ログイン処理
-  const login = async () => {
-    // Google ログインのポップアップ表示して認証結果取得
-    const result = await signInWithPopup(auth, provider);
-    // 認証結果より user 設定
+  // Googleログイン式（DBにも自動登録）
+  const loginWithGoogle = async () => {
+    const result = await signInWithPopup(auth, googleProvider);
     setLoginUser(result.user);
+
+    try {
+      // BEにユーザ情報を保存（upsert）
+      // 既存なら、サーバ側でupsertはせず、uidに紐づくuser情報を返す
+      await apiClient.post("/users", {
+        uid: result.user.uid,
+        email: result.user.email,
+      });
+    } catch (error) {
+      // DB保存失敗時の処理
+      // 新規ユーザーの場合のみFirebaseユーザーを削除してロールバック
+      if (result.additionalUserInfo?.isNewUser) {
+        await result.user.delete();
+        setLoginUser(null);
+      }
+      throw new Error("ユーザー情報の保存に失敗しました");
+    }
+
+    return result.user;
+  };
+
+  // メール/パスワードログイン（既存ユーザー）
+  const loginWithEmail = async (email, password) => {
+    const result = await signInWithEmailAndPassword(auth, email, password);
+    setLoginUser(result.user);
+    return result.user;
+  };
+
+  // Google登録処理
+  // loginWithGoogleでは既存か新規の検証をサーバ側で行い、新規なら登録する処理を行っているので、
+  // signUpWithGoogleでもloginWithGoogleを呼べばよい
+  // 登録がすんだら、user情報が返ってくる
+  const signUpWithGoogle = async () => {
+    return await loginWithGoogle();
+  };
+
+  // メール/パスワード登録処理
+  const signUpWithEmail = async (email, password) => {
+    // 新規作成
+    const result = await createUserWithEmailAndPassword(auth, email, password);
+    setLoginUser(result.user);
+
+    try {
+      // BEにユーザー情報を保存
+      await apiClient.post("/users", {
+        uid: result.user.uid,
+        email: result.user.email,
+      });
+    } catch (error) {
+      // DB保存失敗 → Firebaseユーザーを削除してロールバック
+      await result.user.delete();
+      setLoginUser(null);
+      throw new Error("ユーザー登録に失敗しました");
+    }
+
+    return result.user;
   };
 
   // ログアウト処理
@@ -54,12 +90,14 @@ export const AuthContextProvider = ({ children }) => {
     setLoginUser(null);
   };
 
-  // ログイン情報設定したProvider
   return (
     <AuthContext.Provider
       value={{
         loginUser,
-        login,
+        loginWithGoogle,
+        loginWithEmail,
+        signUpWithGoogle,
+        signUpWithEmail,
         logout,
       }}
     >
@@ -68,7 +106,6 @@ export const AuthContextProvider = ({ children }) => {
   );
 };
 
-// AuthContextConsumer (useContext) # Provider で囲った範囲で使う必要あり
 export const AuthContextConsumer = () => {
   return useContext(AuthContext);
 };
