@@ -1,6 +1,6 @@
-const { createBingoRepository } = require('./bingo.repository');
-const { createBingoService } = require('./bingo.service');
-const { createBingoController } = require('./bingo.controller');
+const { createBingoRepository } = require("./bingo.repository");
+const { createBingoService } = require("./bingo.service");
+const { createBingoController } = require("./bingo.controller");
 
 function initBingo(knex) {
   const repository = createBingoRepository(knex);

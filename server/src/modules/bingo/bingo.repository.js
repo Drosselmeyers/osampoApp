@@ -1,4 +1,4 @@
-function createBingoRepository(knex, table = 'bingo') {
+function createBingoRepository(knex, table = "bingo") {
   const allData = async () => {
     // const
   };
