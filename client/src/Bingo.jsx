@@ -28,21 +28,22 @@ export const Bingo = () => {
     bingoPanel.status = true;
     setBingoList([...resetStatusAllData]);
   };
+
+  /* bingo判定関数群 */
   const testRowCreator = () => {
-    const allRow = [
+    return [
       [0, 1, 2, 3, 4],
       [5, 6, 7, 8, 9],
       [10, 11, 12, 13, 14],
       [15, 16, 17, 18, 19],
       [20, 21, 22, 23, 24],
     ];
-    return allRow;
   };
-  const alreadyBingoChecker = (index) => {
-    const allRow = testRowCreator();
+  const alreadyBingoChecker = (allRow, index) => {
     const find = allRow.find((array) => array.includes(index));
-    const alreadyBingoRow = find.every((index) => bingoList[index].status);
-    return alreadyBingoRow;
+    if (!find) return;
+    const alreadyBingo = find.every((index) => bingoList[index].status);
+    return alreadyBingo;
   };
   const rowChecker = (index) => {
     const [firstRow, secondeRow, thirdRow, fourthRow, fifthRow] =
@@ -72,14 +73,72 @@ export const Bingo = () => {
       if (fifthRowBingo) setBingoCount((prev) => prev + 1);
     }
   };
-  const testRowBingo = (index) => {
-    if (targetIndex === null) return;
-    if (alreadyBingoChecker(index)) return;
-    changeStatus(index);
-    patchStatus(index);
-    rowChecker(index);
+  const testColumnCreator = () => {
+    return [
+      [0, 5, 10, 15, 20],
+      [1, 6, 11, 16, 21],
+      [2, 7, 12, 17, 22],
+      [3, 8, 13, 18, 23],
+      [4, 9, 14, 19, 24],
+    ];
+  };
+  const columnChecker = (index) => {
+    const [firstColumn, secondeColumn, thirdColumn, fourthColumn, fifthColumn] =
+      testColumnCreator();
+    if (firstColumn.includes(index)) {
+      const firstColumnBingo = firstColumn.every(
+        (index) => bingoList[index].status,
+      );
+      if (firstColumnBingo) setBingoCount((prev) => prev + 1);
+    }
+    if (secondeColumn.includes(index)) {
+      const secondColumnBingo = secondeColumn.every(
+        (index) => bingoList[index].status,
+      );
+      if (secondColumnBingo) setBingoCount((prev) => prev + 1);
+    }
+    if (thirdColumn.includes(targetIndex)) {
+      const thirdColumnBingo = thirdColumn.every(
+        (index) => bingoList[index].status,
+      );
+      if (thirdColumnBingo) setBingoCount((prev) => prev + 1);
+    }
+    if (fourthColumn.includes(targetIndex)) {
+      const fourthColumnBingo = fourthColumn.every(
+        (index) => bingoList[index].status,
+      );
+      if (fourthColumnBingo) setBingoCount((prev) => prev + 1);
+    }
+    if (fifthColumn.includes(targetIndex)) {
+      const fifthColumnBingo = fifthColumn.every(
+        (index) => bingoList[index].status,
+      );
+      if (fifthColumnBingo) setBingoCount((prev) => prev + 1);
+    }
+  };
+  const testDiagonallyCreator = () => {
+    return [
+      [0, 6, 12, 18, 24],
+      [4, 8, 12, 16, 20],
+    ];
+  };
+  const diagonallyChecker = (index) => {
+    const [firstDiagonally, secondeDiagonally] = testDiagonallyCreator();
+    if (firstDiagonally.includes(index)) {
+      const firstDiagonallyBingo = firstDiagonally.every(
+        (index) => bingoList[index].status,
+      );
+      if (firstDiagonallyBingo) setBingoCount((prev) => prev + 1);
+    }
+    if (secondeDiagonally.includes(index)) {
+      const secondDiagonallyBingo = secondeDiagonally.every(
+        (index) => bingoList[index].status,
+      );
+      if (secondDiagonallyBingo) setBingoCount((prev) => prev + 1);
+    }
   };
 
+  /* 初回のbingoPanel表示 */
   useEffect(() => {
     const getBingoData = async () => {
       const response = await fetch("/api/bingo");
@@ -93,7 +152,18 @@ export const Bingo = () => {
 
   /* clickが変わるたびに列が揃っているかの精査 */
   useEffect(() => {
-    testRowBingo(targetIndex);
+    const testRowBingo = () => {
+      if (targetIndex === null) return;
+      if (alreadyBingoChecker(testRowCreator(), targetIndex)) return;
+      if (alreadyBingoChecker(testColumnCreator(), targetIndex)) return;
+      if (alreadyBingoChecker(testDiagonallyCreator(), targetIndex)) return;
+      changeStatus(targetIndex);
+      patchStatus(targetIndex);
+      rowChecker(targetIndex);
+      columnChecker(targetIndex);
+      diagonallyChecker(targetIndex);
+    };
+    testRowBingo();
   }, [targetIndex]);
 
   return (
@@ -103,7 +173,6 @@ export const Bingo = () => {
           <div
             onClick={() => {
               setTargetIndex(index);
-              console.log(bingoList[index]);
             }}
             key={index}
             className={`bingo-container ${obj.status && "click"}`}
