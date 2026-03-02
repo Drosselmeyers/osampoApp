@@ -4,6 +4,8 @@ const path = require("path");
 
 const { initUser } = require("./modules/user/index");
 const { createUserRouter } = require("./routes/user");
+const { initPost } = require("./modules/post/index");
+const { createPostRouter } = require("./routes/post");
 
 function buildApp() {
   const app = express();
@@ -13,6 +15,9 @@ function buildApp() {
 
   const userController = initUser(knex);
   app.use("/api", createUserRouter(userController));
+
+  const postController = initPost(knex);
+  app.use("/api", createPostRouter(postController));
 
   app.get("/api/bingo", async (req, res) => {
     const allBingoList = await knex("bingo")
