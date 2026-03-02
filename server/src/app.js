@@ -4,6 +4,8 @@ const path = require("path");
 
 const { initUser } = require("./modules/user/index");
 const { createUserRouter } = require("./routes/user");
+const {initProfile} = require("./modules/profile/index");
+const {createProfilesRouter} = require("./routes/profile");
 
 function buildApp() {
   const app = express();
@@ -13,6 +15,9 @@ function buildApp() {
 
   const userController = initUser(knex);
   app.use("/api", createUserRouter(userController));
+
+  const profileController = initProfile(knex);
+  app.use("/api", createProfilesRouter(profileController));
 
   return app;
 }
