@@ -42,10 +42,12 @@ function buildApp() {
       .orderBy("bingo_id", "asc");
     return res.send(resetStatus);
   });
-  // SPAフォールバック
-  app.get(/^(?!\/api).*/, (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
+
+  // SPAフォールバック: すべてのAPI以外のルートをindex.htmlに
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../public/index.html"));
   });
+
   return app;
 }
 
