@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { AuthContextProvider } from "./contexts/AuthContexts";
 import { LoginPage } from "./LoginPage";
 import { SignUpPage } from "./SignUpPage";
+import { Profile } from "./Profile";
 
 function App() {
   const [bingoList, setBingoList] = useState([]);
@@ -20,6 +21,7 @@ function App() {
           path="/"
           element={<Bingo bingoList={bingoList} setBingoList={setBingoList} />}
         ></Route>
+        <Route path="/profile" element={<Profile />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AuthContextProvider>

@@ -4,8 +4,8 @@ const path = require("path");
 
 const { initUser } = require("./modules/user/index");
 const { createUserRouter } = require("./routes/user");
-const {initProfile} = require("./modules/profile/index");
-const {createProfilesRouter} = require("./routes/profile");
+const { initProfile } = require("./modules/profile/index");
+const { createProfilesRouter } = require("./routes/profile");
 
 function buildApp() {
   const app = express();
