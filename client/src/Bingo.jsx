@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react';
-import './Bingo.css';
+import { useEffect, useState } from "react";
+import "./Bingo.css";
 
 export const Bingo = () => {
   const [bingoList, setBingoList] = useState([]);
   const [targetIndex, setTargetIndex] = useState(null);
 
   const getBingoData = async () => {
-    const response = await fetch('/api/bingo');
+    const response = await fetch("/api/bingo");
     const allBingoData = await response.json();
     setBingoList(allBingoData);
   };
@@ -17,15 +17,15 @@ export const Bingo = () => {
   };
   const patchStatus = async (index) => {
     const targetBingoId = bingoList[index].bingo_id;
-    await fetch('/api/bingo/' + targetBingoId, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+    await fetch("/api/bingo/" + targetBingoId, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
     });
   };
   const bingoReset = async () => {
-    const res = await fetch('/api/bingo/', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+    const res = await fetch("/api/bingo/", {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
     });
     const resetStatusAllData = await res.json();
     setBingoList([...resetStatusAllData]);
@@ -44,11 +44,17 @@ export const Bingo = () => {
               changeStatus(index);
               patchStatus(index);
               setTargetIndex(index);
+              console.log(bingoList[index]);
             }}
             key={index}
-            className={`bingo-container ${obj.status && 'click'}`}
+            className={`bingo-container ${obj.status && "click"}`}
           >
-            <img src={obj.src} alt="画像" />
+            <img
+              width={130}
+              height={130}
+              src={`/public/${obj.src}.jpg`}
+              alt="画像"
+            />
             <p className="bingo-title">{obj.title}</p>
           </div>
         ))}

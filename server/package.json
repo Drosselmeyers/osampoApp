@@ -8,7 +8,7 @@
     "dev": "nodemon src/server.js",
     "migrate-make": "npx knex migrate:make",
     "migrate-latest": "npx knex migrate:latest",
-    "migrate-rollback": "knex migrate:rollback --all",
+    "migrate-rollback": "knex migrate:rollback --all && npm run migrate-latest && npm run seed-data",
     "seed-make": "npx knex seed:make",
     "seed-data": "npx knex seed:run",
     "build": "npm install && cd ../client && npm install && npm run build && cd ../server && rm -rf public && cp -r ../client/dist public && npm run migrate-latest && npm run seed-data"

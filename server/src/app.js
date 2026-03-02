@@ -25,7 +25,6 @@ function buildApp() {
       .orderBy("bingo_id", "asc");
     return res.send(allBingoList);
   });
-
   app.patch("/api/bingo/:bingoId", async (req, res) => {
     const bingoId = req.params.bingoId;
     const patchData = await knex("bingo")
@@ -35,11 +34,11 @@ function buildApp() {
     return res.send(patchData[0]);
   });
   app.patch("/api/bingo", async (_, res) => {
+    await knex("bingo").select("*").update({ status: false });
+
     const resetStatus = await knex("bingo")
       .select("*")
-      .update({ status: false })
-      .orderBy("bingo_id", "asc")
-      .returning("*");
+      .orderBy("bingo_id", "asc");
     return res.send(resetStatus);
   });
   return app;

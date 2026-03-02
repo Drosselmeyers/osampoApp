@@ -4,7 +4,7 @@ function createBingoService(repository) {
       return {
         ok: false,
         status: 400,
-        message: 'uid/emailのいずれかが不足しています',
+        message: "uid/emailのいずれかが不足しています",
       };
     }
     const user = await repository.upsert(uid, email);

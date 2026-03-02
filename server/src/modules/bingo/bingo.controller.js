@@ -6,7 +6,7 @@ function createBingoController(service, repository) {
       const user = await repository.findByUid(uid);
 
       if (!user) {
-        return res.status(404).json({ error: 'ユーザが見つかりませんでした' });
+        return res.status(404).json({ error: "ユーザが見つかりませんでした" });
       }
 
       res.status(200).json({ data: user });
