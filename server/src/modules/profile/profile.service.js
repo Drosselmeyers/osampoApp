@@ -5,7 +5,7 @@ function createProfileService(repository) {
     if (!profile) {
       return {
         ok: false,
-        status: 400,
+        status: 404,
         message: "プロフィールを登録してください",
       };
     }
@@ -27,7 +27,7 @@ function createProfileService(repository) {
       };
     }
 
-    const profile = await repository.create(user_id, displayname, frequency);
+    const profile = await repository.createProfile(user_id, displayname, frequency);
     return { 
       ok: true, 
       data: profile, 
