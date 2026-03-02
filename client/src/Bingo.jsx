@@ -59,7 +59,9 @@ export const Bingo = () => {
           </div>
         ))}
       </div>
-      <button onClick={bingoReset}>bingo reset</button>
+      <button className="reset-button" onClick={bingoReset}>
+        bingo reset
+      </button>
     </>
   );
 };

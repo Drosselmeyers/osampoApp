@@ -45,6 +45,8 @@ function buildApp() {
   app.get(/^(?!\/api).*/, (req, res) => {
     res.sendFile(path.join(__dirname, "public", "index.html"));
   });
+  /* joさんのおまじない */
+  app.use("/", express.static(path.join(__dirname, "../../client/dist")));
   return app;
 }
 
