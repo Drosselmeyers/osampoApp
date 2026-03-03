@@ -8,6 +8,8 @@ const { initProfile } = require("./modules/profile/index");
 const { createProfilesRouter } = require("./routes/profile");
 const { initPost } = require("./modules/post/index");
 const { createPostRouter } = require("./routes/post");
+const { initReminder } = require("./modules/reminder/index");
+const { createRemindersRouter } = require("./routes/reminder");
 
 function buildApp() {
   const app = express();
@@ -21,6 +23,10 @@ function buildApp() {
 
   const profileController = initProfile(knex);
   app.use("/api", createProfilesRouter(profileController));
+
+  const reminderController = initReminder(knex);
+  app.use("/api", createRemindersRouter(reminderController));
+
   const postController = initPost(knex);
   app.use("/api", createPostRouter(postController));
 
