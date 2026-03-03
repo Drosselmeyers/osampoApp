@@ -6,6 +6,7 @@ import { AuthContextProvider } from "./contexts/AuthContexts";
 import { LoginPage } from "./LoginPage";
 import { SignUpPage } from "./SignUpPage";
 import { PostPage } from "./PostPage";
+import { SampoPage } from "./sampoPage";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Route path="/" element={<Bingo />}></Route>
         <Route path="/post" element={<PostPage />}></Route>
         <Route path="*" element={<Navigate to="/" replace />} />
+        <Route path="/sampo" element={<SampoPage />} />
       </Routes>
     </AuthContextProvider>
   );

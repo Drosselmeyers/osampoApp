@@ -1,10 +1,15 @@
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
+import { useNavigate, Link } from "react-router-dom";
+
 import "./Bingo.css";
 
 export const Bingo = () => {
   const [bingoList, setBingoList] = useState([]);
   const [targetIndex, setTargetIndex] = useState(null);
   const [bingoCount, setBingoCount] = useState(0);
+
+  const navigate = useNavigate();
 
   const changeStatus = (index) => {
     const newArray = [...bingoList];
@@ -19,25 +24,44 @@ export const Bingo = () => {
     });
   };
   const resetBingo = async () => {
-    const res = await fetch("/api/bingo/", {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-    });
-    const resetStatusAllData = await res.json();
-    const bingoPanel = resetStatusAllData.find((obj) => obj.title === "Bingo");
-    bingoPanel.status = true;
-    setBingoList([...resetStatusAllData]);
+    const reset = window.confirm("リセットする？");
+    if (reset) {
+      const res = await fetch("/api/bingo/", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+      });
+      const resetStatusAllData = await res.json();
+      const bingoPanel = resetStatusAllData.find(
+        (obj) => obj.title === "Bingo",
+      );
+      bingoPanel.status = true;
+      setBingoList([...resetStatusAllData]);
+    }
+  };
+  const finishBingo = () => {
+    const finish = window.confirm("終わりにする？");
+    if (finish) return navigate("/clear");
   };
 
   /* bingo判定関数群 */
   const testRowCreator = () => {
-    return [
+    const threeByThree = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+    ];
+    const fiveByFive = [
       [0, 1, 2, 3, 4],
       [5, 6, 7, 8, 9],
       [10, 11, 12, 13, 14],
       [15, 16, 17, 18, 19],
       [20, 21, 22, 23, 24],
     ];
+    const nineByNine = [
+      [0, 1, 2, 3, 4, 5, 6, 7, 8],
+      [9, 10, 11, 12, 13, 14, 15],
+    ];
+    return fiveByFive;
   };
   const alreadyBingoChecker = (allRow, index) => {
     const find = allRow.find((array) => array.includes(index));
@@ -166,8 +190,17 @@ export const Bingo = () => {
     testRowBingo();
   }, [targetIndex]);
 
+  /* bingoPointを通知する */
+  useEffect(() => {
+    if (bingoCount === 12) {
+      window.alert("おめでとう全部bingo!!");
+      navigate("/clear");
+    }
+  }, [bingoCount]);
+
   return (
     <>
+      <p className="bingo-count-view">{`ビンゴ点数: ${bingoCount}`}</p>
       <div className="bingo-main">
         {bingoList.map((obj, index) => (
           <div
@@ -188,10 +221,33 @@ export const Bingo = () => {
           </div>
         ))}
       </div>
-      <button className="reset-button" onClick={resetBingo}>
-        bingo reset
-      </button>
-      <button onClick={() => console.log(bingoCount)}>point check</button>
+      <div className="bingo-bottom-container">
+        <motion.button
+          whileTap={{ y: 10 }}
+          transition={{ direction: 1 }}
+          className="bingo-reset-button"
+          onClick={resetBingo}
+        >
+          リセット
+        </motion.button>
+        <Link to={"/sampo"}>
+          <motion.button
+            whileTap={{ y: 10 }}
+            transition={{ direction: 1 }}
+            className="bingo-finish-button"
+          >
+            散歩
+          </motion.button>
+        </Link>
+        <motion.button
+          whileTap={{ y: 10 }}
+          transition={{ direction: 1 }}
+          className="bingo-finish-button"
+          onClick={finishBingo}
+        >
+          終わり
+        </motion.button>
+      </div>
     </>
   );
 };
