@@ -24,8 +24,8 @@ function createTimerController(service) {
     try {
       const timerId = req.params.timerId;
       const body = req.body;
-      const patchTimer = await service.patchUserTimer(timerId, body);
-      return res.send(patchTimer);
+      await service.patchUserTimer(timerId, body);
+      return res.send({ message: "patch" });
     } catch (error) {
       return res.send({ message: error.message });
     }

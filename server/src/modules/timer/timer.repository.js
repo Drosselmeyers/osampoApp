@@ -5,13 +5,13 @@ function createTimerRepository(knex, table = "timer") {
   const createPostUserTimer = async (userId, body) => {
     await knex(table).insert({
       user_id: userId,
-      time: `${body.hour}:${body.minute}:${body.second}`,
+      time: body.time,
     });
   };
   const patchUserTimer = async (timerId, body) => {
     return await knex("timer")
       .where("timer_id", timerId)
-      .update({ time: `${body.hour}:${body.minute}:${body.second}` })
+      .update({ time: body.time })
       .returning("*");
   };
 

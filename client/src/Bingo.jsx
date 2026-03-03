@@ -39,18 +39,13 @@ export const Bingo = () => {
 
   /* bingo判定関数群 */
   const testRowCreator = () => {
-    const fiveByFive = [
+    return [
       [0, 1, 2, 3, 4],
       [5, 6, 7, 8, 9],
       [10, 11, 12, 13, 14],
       [15, 16, 17, 18, 19],
       [20, 21, 22, 23, 24],
     ];
-    const nineByNine = [
-      [0, 1, 2, 3, 4, 5, 6, 7, 8],
-      [9, 10, 11, 12, 13, 14, 15],
-    ];
-    return fiveByFive;
   };
   const alreadyBingoChecker = (allRow, index) => {
     const find = allRow.find((array) => array.includes(index));
@@ -212,9 +207,6 @@ export const Bingo = () => {
         </motion.button>
 
         <p className="bingo-count-view">{`ビンゴ点数: ${bingoCount}`}</p>
-        <motion.button onClick={() => navigate("/bingo")} whileTap={{ y: 5 }}>
-          大
-        </motion.button>
       </div>
       <div className="bingo-main">
         {bingoList.map((obj, index) => (

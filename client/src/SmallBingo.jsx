@@ -169,17 +169,10 @@ export const SmallBingo = () => {
   return (
     <>
       <div className="bingo-top">
-        <motion.button
-          onClick={() => navigate("/smallBingo")}
-          whileTap={{ y: 5 }}
-        >
-          小
-        </motion.button>
-
-        <p className="bingo-count-view">{`ビンゴ点数: ${bingoCount}`}</p>
         <motion.button onClick={() => navigate("/bingo")} whileTap={{ y: 5 }}>
           大
         </motion.button>
+        <p className="bingo-count-view">{`ビンゴ点数: ${bingoCount}`}</p>
       </div>
       <div className="small-bingo-main">
         {bingoList.map((obj, index) => (

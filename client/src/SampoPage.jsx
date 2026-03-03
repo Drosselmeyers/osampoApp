@@ -5,18 +5,13 @@ import { useNavigate } from "react-router-dom";
 
 export const SampoPage = () => {
   const { loginUser } = AuthContextConsumer();
-  const [second, setSecond] = useState(0);
-  const [twoSecond, setTwoSecond] = useState(0);
-  const [minute, setMinute] = useState(0);
-  const [twoMinute, setTwoMinute] = useState(0);
-  const [hour, setHour] = useState(0);
-  const [twoHour, setTwoHour] = useState(0);
+  const [second, setSecond] = useState(localStorage.getItem("time"));
   const [click, setClick] = useState(false);
   const [timerId, setTimerId] = useState("");
   const [text, setText] = useState("");
   const navigate = useNavigate();
 
-  function timeTextMaker(seconds) {
+  const timeTextMaker = (seconds) => {
     const hour = Math.floor(seconds / 3600);
     const min = Math.floor((seconds % 3600) / 60);
     const sec = seconds % 60;
@@ -28,14 +23,6 @@ export const SampoPage = () => {
     let time = "";
     hour !== 0 ? (time = `${hh}:${mm}:${ss}`) : (time = `${mm}:${ss}`);
     return time;
-  }
-
-  const createTimerData = () => {
-    return {
-      hour: `${twoHour}${hour}`,
-      minute: `${twoMinute}${minute}`,
-      second: `${twoSecond}${second}`,
-    };
   };
   const searchTimer = async () => {
     if (!loginUser) return;
@@ -51,35 +38,27 @@ export const SampoPage = () => {
     const targetTimer = await searchTimer();
     if (!targetTimer) {
       try {
-        const postRequest = await fetch("/api/timer/" + loginUser.uid, {
+        await fetch("/api/timer/" + loginUser.uid, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(createTimerData()),
+          body: JSON.stringify({ time: second }),
         });
-        const res = await postRequest.json();
-        setText(res.time);
       } catch (error) {
         throw new Error(error.message);
       }
     } else {
-      setText(targetTimer.time);
+      setSecond(targetTimer.time);
     }
   };
   const patchTimer = async () => {
     const targetTimer = await searchTimer();
     if (!targetTimer) return;
     try {
-      const patchResponse = await fetch("/api/timer/" + targetTimer.timer_id, {
+      await fetch("/api/timer/" + targetTimer.timer_id, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          hour: `${twoHour}${hour}`,
-          minute: `${twoMinute}${minute}`,
-          second: `${twoSecond}${second}`,
-        }),
+        body: JSON.stringify({ time: second }),
       });
-      const res = await patchResponse.json();
-      setText(res[0].time);
     } catch (error) {
       console.log(error.message);
     }
@@ -89,45 +68,35 @@ export const SampoPage = () => {
       setSecond((prev) => prev + 1);
     }, 1000);
     setTimerId(timer);
-
     setClick(!click);
-    /* 初めての押下だった場合post */
     postTimer();
   };
   const stopTimer = () => {
-    clearTimeout(timerId);
+    clearInterval(timerId);
     setClick(!click);
   };
   const moveBingo = () => {
-    const isMove = window.confirm("移動するとtimerが消えてしまいます。");
+    const isMove = window.confirm("timerを一時停止します。");
     if (isMove) navigate("/bingo");
   };
   useEffect(() => {
-    const countUpView = () => {
-      if (second === 10) {
-        setTwoSecond((prev) => prev + 1);
-        setSecond(0);
-      }
-      if (twoSecond === 6) {
-        setMinute((prev) => prev + 1);
-        setTwoSecond(0);
-      }
-      if (minute === 10) {
-        setTwoMinute((prev) => prev + 1);
-        setMinute(0);
-      }
-      if (twoMinute === 6) {
-        setHour((prev) => prev + 1);
-        setTwoMinute(0);
-      }
-      if (hour === 10) {
-        setTwoHour((prev) => prev + 1);
-        setHour(0);
-      }
-    };
-    countUpView();
+    setText(timeTextMaker(second));
+    localStorage.setItem("time", timeTextMaker(second));
     patchTimer();
   }, [second]);
+
+  useEffect(() => {
+    const get = async () => {
+      if (!loginUser) return;
+      const getRes = await searchTimer();
+      if (getRes) {
+        setSecond(getRes.time);
+      } else {
+        setSecond(0);
+      }
+    };
+    get();
+  }, []);
 
   return (
     <div>
