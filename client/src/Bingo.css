@@ -4,24 +4,55 @@
   gap: 5px;
 }
 
+.bingo-count-view {
+  font-weight: bold;
+  font-size: 23px;
+  margin: 0px 0px 10px 0px;
+}
+
 .bingo-container {
-  border: solid 5px;
+  border: solid 5px #4c3f54;
   border-radius: 5px;
 }
 
 .bingo-container.click {
   opacity: 0.5;
+  background-color: #4c3f54;
 }
 
+.bingo-image {
+  background-color: white;
+  display: block;
+}
 .bingo-title {
-  color: #4c3f54;
+  color: black;
   background-color: #f2c057;
   margin: 0px;
-  border-radius: 5px;
+  font-weight: bold;
 }
 
-.reset-button {
+.bingo-bottom-container {
   display: flex;
-  justify-content: start;
+  justify-content: space-around;
   margin-top: 10px;
+}
+
+.bingo-reset-button {
+  padding: 5px 50px;
+  border: none;
+  box-shadow: 5px 5px 15px -5px #363636;
+  border-radius: 5px;
+  background-color: #d13525;
+  color: black;
+  font-weight: bold;
+}
+
+.bingo-finish-button {
+  padding: 5px 50px;
+  border: none;
+  box-shadow: 5px 5px 15px -5px #363636;
+  border-radius: 5px;
+  background-color: #f2c057;
+  color: black;
+  font-weight: bold;
 }
