@@ -10,6 +10,9 @@ const { initPost } = require("./modules/post/index");
 const { createPostRouter } = require("./routes/post");
 const { initReminder } = require("./modules/reminder/index");
 const { createRemindersRouter } = require("./routes/reminder");
+const { initBingo } = require("./modules/bingo/index");
+const { createBingoRouter } = require("./routes/bingo");
+const { time } = require("console");
 
 function buildApp() {
   const app = express();
@@ -29,30 +32,32 @@ function buildApp() {
 
   const postController = initPost(knex);
   app.use("/api", createPostRouter(postController));
+  const bingoController = initBingo(knex);
+  app.use("/api", createBingoRouter(bingoController));
 
-  app.get("/api/bingo", async (req, res) => {
-    const allBingoList = await knex("bingo")
-      .select("*")
-      .orderBy("bingo_id", "asc");
-    return res.send(allBingoList);
+  app.post("/api/timer/:userId", async (req, res) => {
+    const userId = req.params.userId;
+    const body = req.body;
+    await knex("timer").insert({
+      user_id: userId,
+      time: `${body.hour}:${body.minute}:${body.second}`,
+    });
+    return res.send({ message: "post" });
   });
-  app.patch("/api/bingo/:bingoId", async (req, res) => {
-    const bingoId = req.params.bingoId;
-    const patchData = await knex("bingo")
-      .where("bingo_id", bingoId)
-      .update({ status: true })
+  app.get("/api/timer/:userId", async (req, res) => {
+    const userId = req.params.userId;
+    const targetTimer = await knex("timer").where("user_id", userId);
+    return res.send(targetTimer);
+  });
+  app.patch("/api/timer/:timerId", async (req, res) => {
+    const timerId = req.params.timerId;
+    const body = req.body;
+    const patchTimer = await knex("timer")
+      .where("timer_id", timerId)
+      .update({ time: `${body.hour}:${body.minute}:${body.second}` })
       .returning("*");
-    return res.send(patchData[0]);
+    return res.send(patchTimer);
   });
-  app.patch("/api/bingo", async (_, res) => {
-    await knex("bingo").select("*").update({ status: false });
-
-    const resetStatus = await knex("bingo")
-      .select("*")
-      .orderBy("bingo_id", "asc");
-    return res.send(resetStatus);
-  });
-
   // SPAフォールバック: すべてのAPI以外のルートをindex.htmlに
   app.get(/^(?!\/api).*/, (req, res) => {
     res.sendFile(path.join(__dirname, "../public/index.html"));
