@@ -10,7 +10,8 @@ const { initPost } = require("./modules/post/index");
 const { createPostRouter } = require("./routes/post");
 const { initBingo } = require("./modules/bingo/index");
 const { createBingoRouter } = require("./routes/bingo");
-const { time } = require("console");
+const { initSmallBingo } = require("./modules/smallBingo");
+const { createSmallBingoRouter } = require("./routes/smallBingo");
 
 function buildApp() {
   const app = express();
@@ -27,8 +28,12 @@ function buildApp() {
 
   const postController = initPost(knex);
   app.use("/api", createPostRouter(postController));
+
   const bingoController = initBingo(knex);
   app.use("/api", createBingoRouter(bingoController));
+
+  const smallBingoController = initSmallBingo(knex);
+  app.use("/api", createSmallBingoRouter(smallBingoController));
 
   app.post("/api/timer/:userId", async (req, res) => {
     const userId = req.params.userId;

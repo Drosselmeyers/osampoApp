@@ -18,7 +18,7 @@ function createBingoController(service) {
     }
   };
 
-  const resetBingoStatus = async () => {
+  const resetBingoStatus = async (_, res) => {
     try {
       const getAllResetBingoStatus = await service.resetBingoStatus();
       return res.send(getAllResetBingoStatus);

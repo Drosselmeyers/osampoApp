@@ -3,6 +3,21 @@
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 5px;
 }
+.bingo-top {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+
+.bingo-top button {
+  padding: 5px 20px;
+  border: none;
+  box-shadow: 5px 5px 15px -5px #363636;
+  border-radius: 5px;
+  background-color: #f2c057;
+  color: black;
+  font-weight: bold;
+}
 
 .bingo-count-view {
   font-weight: bold;

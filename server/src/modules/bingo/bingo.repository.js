@@ -11,7 +11,7 @@ function createBingoRepository(knex, table = "bingo") {
 
   const resetBingoStatus = async () => {
     await knex(table).select("*").update({ status: false });
-    return await knex(table).select("*").orderBy("bingo_id", "asc");
+    // return await knex(table).select("*").orderBy("bingo_id", "asc");
   };
 
   return { getAllBingoPanel, patchBingoStatus, resetBingoStatus };
