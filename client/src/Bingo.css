@@ -14,8 +14,14 @@
 }
 
 .bingo-title {
-  color: white;
+  color: #4c3f54;
   background-color: #f2c057;
   margin: 0px;
   border-radius: 5px;
+}
+
+.reset-button {
+  display: flex;
+  justify-content: start;
+  margin-top: 10px;
 }
