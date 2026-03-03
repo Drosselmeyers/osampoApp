@@ -1,18 +1,19 @@
 function createBingoRepository(knex, table = "bingo") {
-  const allData = async () => {
-    // const
+  const getAllBingoPanel = async () => {
+    return await knex(table).select("*").orderBy("bingo_id", "asc");
+  };
+  const patchBingoStatus = async (bingoId) => {
+    return await knex(table)
+      .where("bingo_id", bingoId)
+      .update({ status: true })
+      .returning("*");
   };
 
-  // uidが存在しなければ作成（既存ユーザーは更新しない）
-  const upsert = async (uid, email) => {
-    const existing = await findByUid(uid);
-    if (!existing) {
-      await knex(table).insert({ uid, email });
-    }
-    return await findByUid(uid);
+  const resetBingoStatus = async () => {
+    await knex(table).select("*").update({ status: false });
+    return await knex(table).select("*").orderBy("bingo_id", "asc");
   };
 
-  return { findByUid, upsert };
+  return { getAllBingoPanel, patchBingoStatus, resetBingoStatus };
 }
-
 module.exports = { createBingoRepository };

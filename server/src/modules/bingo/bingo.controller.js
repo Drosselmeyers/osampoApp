@@ -1,39 +1,33 @@
-function createBingoController(service, repository) {
-  // 認証ユーザーの情報取得
-  const getMe = async (req, res) => {
+function createBingoController(service) {
+  const getAllBingoPanel = async (_, res) => {
     try {
-      const uid = req.user.uid;
-      const user = await repository.findByUid(uid);
-
-      if (!user) {
-        return res.status(404).json({ error: "ユーザが見つかりませんでした" });
-      }
-
-      res.status(200).json({ data: user });
+      const allBingoPanel = await service.getAllBingoPanel();
+      return res.json(allBingoPanel);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res.status(404).json({ error: error.message });
     }
   };
 
-  // ユーザー登録/更新
-  const upsert = async (req, res) => {
+  const patchBingoStatus = async (req, res) => {
+    const bingoId = req.params.bingoId;
     try {
-      const uid = req.user.uid;
-      const email = req.user.email;
-
-      const result = await service.upsert(uid, email);
-
-      if (result.ok) {
-        res.status(201).json({ data: result.data });
-      } else {
-        res.status(result.status).json({ error: result.message });
-      }
+      const getPatchPanel = await service.patchBingoStatus(bingoId);
+      return res.send(getPatchPanel);
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      return res.status(306).send({ error: error.message });
     }
   };
 
-  return { getMe, upsert };
+  const resetBingoStatus = async () => {
+    try {
+      const getAllResetBingoStatus = await service.resetBingoStatus();
+      return res.send(getAllResetBingoStatus);
+    } catch (error) {
+      return res.status(404).send({ error: error.message });
+    }
+  };
+
+  return { getAllBingoPanel, patchBingoStatus, resetBingoStatus };
 }
 
 module.exports = { createBingoController };

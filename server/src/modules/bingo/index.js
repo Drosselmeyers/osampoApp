@@ -5,9 +5,8 @@ const { createBingoController } = require("./bingo.controller");
 function initBingo(knex) {
   const repository = createBingoRepository(knex);
   const service = createBingoService(repository);
-  const controller = createBingoController(service, repository);
-
+  const controller = createBingoController(service);
   return controller;
 }
-
+initBingo();
 module.exports = { initBingo };
