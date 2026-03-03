@@ -9,9 +9,9 @@ function createSmallBingoController(service) {
   };
 
   const patchSmallBingoStatus = async (req, res) => {
-    const SmallBingoId = req.params.SmallBingoId;
+    const smallBingoId = req.params.smallBingoId;
     try {
-      const getPatchPanel = await service.patchSmallBingoStatus(SmallBingoId);
+      const getPatchPanel = await service.patchSmallBingoStatus(smallBingoId);
       return res.send(getPatchPanel);
     } catch (error) {
       return res.status(306).send({ error: error.message });
