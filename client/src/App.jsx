@@ -8,6 +8,7 @@ import { SignUpPage } from "./SignUpPage";
 import { Profile } from "./Profile";
 import { PostPage } from "./PostPage";
 import { SampoPage } from "./sampoPage";
+import { Reminder} from "./Reminder";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/post" element={<PostPage />}></Route>
         <Route path="*" element={<Navigate to="/" replace />} />
         <Route path="/sampo" element={<SampoPage />} />
+        <Route path="/reminder" element={<Reminder />} />
       </Routes>
     </AuthContextProvider>
   );

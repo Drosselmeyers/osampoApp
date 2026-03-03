@@ -4,10 +4,8 @@ function createReminderController(service) {
   const getReminder = async (req, res) => {
     try {
       const user_id = req.user.uid;
-      
       const result = await service.getReminder(user_id);
       
-      // 3. HTTPレスポンスを返す
       if (result.ok) {
         res.status(200).json({ data: result.data });
       } else {
@@ -18,14 +16,30 @@ function createReminderController(service) {
     }
   };
   
-  // リマインダー作成
-  const createReminder = async (req, res) => {
+  // リマインダー設定/更新
+  const setReminder = async (req, res) => {
     try {
       const user_id = req.user.uid;
-      const result = await service.createReminder(user_id);
+      const result = await service.setReminder(user_id);
       
       if (result.ok) {
-        res.status(201).json({ data: result.data, message: result.message });
+        res.status(200).json({ data: result.data, message: result.message });
+      } else {
+        res.status(result.status).json({ error: result.message });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };
+
+  // リマインダー削除
+  const deleteReminder = async (req, res) => {
+    try {
+      const user_id = req.user.uid;
+      const result = await service.deleteReminder(user_id);
+      
+      if (result.ok) {
+        res.status(200).json({ message: result.message });
       } else {
         res.status(result.status).json({ error: result.message });
       }
@@ -34,7 +48,11 @@ function createReminderController(service) {
     }
   };
   
-  return { getReminder, createReminder };
+  return { 
+    getReminder, 
+    setReminder, 
+    deleteReminder 
+  };
 }
 
 module.exports = { createReminderController };

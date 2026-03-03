@@ -1,13 +1,25 @@
 function createReminderRepository(knex, table = "reminders") {
   
-  // user_idで検索
+  // リマインダー取得
   const findByUserId = async (user_id) => {
     return await knex(table).where({ user_id }).first();
   };
   
-  // リマインダー作成
-  const createReminder = async (user_id) => {
-    await knex(table).insert({ user_id });
+  // リマインダー設定/更新（upsert）
+  const upsert = async (user_id) => {
+    const existing = await findByUserId(user_id);
+    
+    if (existing) {
+      // 既存のリマインダーがあれば base_time を更新
+      const now = new Date();
+      await knex(table)
+        .where({ user_id })
+        .update({ base_time: now });
+    } else {
+      // なければ新規作成（base_time は DB のデフォルト値）
+      await knex(table).insert({ user_id });
+    }
+    
     return await findByUserId(user_id);
   };
 
@@ -18,7 +30,7 @@ function createReminderRepository(knex, table = "reminders") {
   
   return {
     findByUserId,
-    createReminder,
+    upsert,
     deleteReminder,
   };
 }
