@@ -24,6 +24,7 @@ function buildApp() {
 
   const profileController = initProfile(knex);
   app.use("/api", createProfilesRouter(profileController));
+
   const postController = initPost(knex);
   app.use("/api", createPostRouter(postController));
   const bingoController = initBingo(knex);
