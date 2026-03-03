@@ -166,6 +166,7 @@ export const Bingo = () => {
   useEffect(() => {
     const getBingoData = async () => {
       const response = await fetch("/api/bingo");
+
       const allBingoData = await response.json();
       const bingoPanel = allBingoData.find((obj) => obj.title === "Bingo");
       bingoPanel.status = true;

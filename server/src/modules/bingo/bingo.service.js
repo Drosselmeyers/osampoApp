@@ -1,17 +1,15 @@
 function createBingoService(repository) {
-  const upsert = async (uid, email) => {
-    if (!uid || !email) {
-      return {
-        ok: false,
-        status: 400,
-        message: "uid/emailのいずれかが不足しています",
-      };
-    }
-    const user = await repository.upsert(uid, email);
-    return { ok: true, data: user };
+  const getAllBingoPanel = async () => {
+    return await repository.getAllBingoPanel();
+  };
+  const patchBingoStatus = async () => {
+    return await repository.patchBingoStatus();
+  };
+  const resetBingoStatus = async () => {
+    return await repository.resetBingoStatus();
   };
 
-  return { upsert };
+  return { getAllBingoPanel, patchBingoStatus, resetBingoStatus };
 }
-
+createBingoService();
 module.exports = { createBingoService };
