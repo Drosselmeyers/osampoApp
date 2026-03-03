@@ -4,8 +4,13 @@ const path = require("path");
 
 const { initUser } = require("./modules/user/index");
 const { createUserRouter } = require("./routes/user");
+<<<<<<< feature/profile
+const { initProfile } = require("./modules/profile/index");
+const { createProfilesRouter } = require("./routes/profile");
+=======
 const { initPost } = require("./modules/post/index");
 const { createPostRouter } = require("./routes/post");
+>>>>>>> main
 
 function buildApp() {
   const app = express();
@@ -17,6 +22,10 @@ function buildApp() {
   const userController = initUser(knex);
   app.use("/api", createUserRouter(userController));
 
+<<<<<<< feature/profile
+  const profileController = initProfile(knex);
+  app.use("/api", createProfilesRouter(profileController));
+=======
   const postController = initPost(knex);
   app.use("/api", createPostRouter(postController));
 
@@ -42,10 +51,13 @@ function buildApp() {
       .orderBy("bingo_id", "asc");
     return res.send(resetStatus);
   });
-  // SPAフォールバック
+
+  // SPAフォールバック: すべてのAPI以外のルートをindex.htmlに
   app.get(/^(?!\/api).*/, (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "index.html"));
+    res.sendFile(path.join(__dirname, "../public/index.html"));
   });
+>>>>>>> main
+
   return app;
 }
 

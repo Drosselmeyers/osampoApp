@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { AuthContextProvider } from "./contexts/AuthContexts";
 import { LoginPage } from "./LoginPage";
 import { SignUpPage } from "./SignUpPage";
+import { Profile } from "./Profile";
 import { PostPage } from "./PostPage";
 import { SampoPage } from "./sampoPage";
 
@@ -14,6 +15,11 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
+        <Route
+          path="/"
+          element={<Bingo bingoList={bingoList} setBingoList={setBingoList} />}
+        ></Route>
+        <Route path="/profile" element={<Profile />} />
         <Route path="/" element={<Bingo />}></Route>
         <Route path="/post" element={<PostPage />}></Route>
         <Route path="*" element={<Navigate to="/" replace />} />
