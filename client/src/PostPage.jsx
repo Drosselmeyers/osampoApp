@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import apiClient from "./config/apiClient";
+import { NavBar } from "./NavBar";
 
 export const PostPage = () => {
   const [loading, setLoading] = useState(false);
@@ -140,6 +141,7 @@ export const PostPage = () => {
 
   return (
     <>
+      <NavBar />
       <div>
         <h2>投稿を作成</h2>
         <div>
