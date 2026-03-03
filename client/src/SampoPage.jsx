@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { AuthContextConsumer } from "./contexts/AuthContexts";
+import { useNavigate } from "react-router-dom";
 
 export const SampoPage = () => {
   const { loginUser } = AuthContextConsumer();
@@ -13,6 +14,21 @@ export const SampoPage = () => {
   const [click, setClick] = useState(false);
   const [timerId, setTimerId] = useState("");
   const [text, setText] = useState("");
+  const navigate = useNavigate();
+
+  function timeTextMaker(seconds) {
+    const hour = Math.floor(seconds / 3600);
+    const min = Math.floor((seconds % 3600) / 60);
+    const sec = seconds % 60;
+    let hh;
+    // hour が3桁以上の場合は左0埋めをしない
+    hour < 100 ? (hh = `00${hour}`.slice(-2)) : (hh = hour);
+    const mm = `00${min}`.slice(-2);
+    const ss = `00${sec}`.slice(-2);
+    let time = "";
+    hour !== 0 ? (time = `${hh}:${mm}:${ss}`) : (time = `${mm}:${ss}`);
+    return time;
+  }
 
   const createTimerData = () => {
     return {
@@ -23,20 +39,28 @@ export const SampoPage = () => {
   };
   const searchTimer = async () => {
     if (!loginUser) return;
-    const foo = await fetch("/api/timer/" + loginUser.uid);
-    const result = await foo.json();
-    return result[0];
+    try {
+      const getRequest = await fetch("/api/timer/" + loginUser.uid);
+      const targetTimer = await getRequest.json();
+      return targetTimer[0];
+    } catch (error) {
+      throw new Error(error.message);
+    }
   };
   const postTimer = async () => {
     const targetTimer = await searchTimer();
     if (!targetTimer) {
-      const postRequest = await fetch("/api/timer/" + loginUser.uid, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(createTimerData()),
-      });
-      const res = await postRequest.json();
-      setText(res.time);
+      try {
+        const postRequest = await fetch("/api/timer/" + loginUser.uid, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(createTimerData()),
+        });
+        const res = await postRequest.json();
+        setText(res.time);
+      } catch (error) {
+        throw new Error(error.message);
+      }
     } else {
       setText(targetTimer.time);
     }
@@ -44,17 +68,21 @@ export const SampoPage = () => {
   const patchTimer = async () => {
     const targetTimer = await searchTimer();
     if (!targetTimer) return;
-    const patchResponse = await fetch("/api/timer/" + targetTimer.timer_id, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        hour: `${twoHour}${hour}`,
-        minute: `${twoMinute}${minute}`,
-        second: `${twoSecond}${second}`,
-      }),
-    });
-    const res = await patchResponse.json();
-    setText(res[0].time);
+    try {
+      const patchResponse = await fetch("/api/timer/" + targetTimer.timer_id, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          hour: `${twoHour}${hour}`,
+          minute: `${twoMinute}${minute}`,
+          second: `${twoSecond}${second}`,
+        }),
+      });
+      const res = await patchResponse.json();
+      setText(res[0].time);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
   const startTimer = async () => {
     const timer = setInterval(() => {
@@ -69,6 +97,10 @@ export const SampoPage = () => {
   const stopTimer = () => {
     clearTimeout(timerId);
     setClick(!click);
+  };
+  const moveBingo = () => {
+    const isMove = window.confirm("移動するとtimerが消えてしまいます。");
+    if (isMove) navigate("/bingo");
   };
   useEffect(() => {
     const countUpView = () => {
@@ -108,6 +140,7 @@ export const SampoPage = () => {
         </button>
       )}
       <h2>{text}</h2>
+      <button onClick={moveBingo}>ビンゴページ</button>
       <button onClick={() => console.log(text)}>散歩終了</button>
     </div>
   );

@@ -1,19 +1,37 @@
 function createTimerController(service) {
+  const searchTimer = async (req, res) => {
+    try {
+      const userId = req.params.userId;
+      const body = req.body;
+      const targetTimer = await service.searchTimer(userId, body);
+      return res.send(targetTimer);
+    } catch (error) {
+      return res.status(306).send({ message: error.message });
+    }
+  };
   const createPostUserTimer = async (req, res) => {
-    const userId = req.params.userId;
+    try {
+      const userId = req.params.userId;
+      const body = req.body;
+      await service.createPostUserTimer(userId, body);
+      return res.send({ message: "postTimer" });
+    } catch (error) {
+      return res.status(306).send({ message: error.message });
+    }
   };
 
   const patchUserTimer = async (req, res) => {
-    const userId = req.params.userId;
-  };
-
-  const resetUserTimer = async () => {
-    const userId = req.params.userId;
     try {
-    } catch (error) {}
+      const timerId = req.params.timerId;
+      const body = req.body;
+      const patchTimer = await service.patchUserTimer(timerId, body);
+      return res.send(patchTimer);
+    } catch (error) {
+      return res.send({ message: error.message });
+    }
   };
 
-  return { createPostUserTimer, patchUserTimer, resetUserTimer };
+  return { searchTimer, createPostUserTimer, patchUserTimer };
 }
 
 module.exports = { createTimerController };
