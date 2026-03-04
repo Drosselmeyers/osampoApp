@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import { Link, useNavigate } from "react-router-dom";
 import "./SmallBingo.css";
+import { NavBar } from "./NavBar";
 
 export const SmallBingo = () => {
   const [bingoList, setBingoList] = useState([]);
@@ -168,6 +169,7 @@ export const SmallBingo = () => {
 
   return (
     <>
+      <NavBar />
       <div className="bingo-top">
         <motion.button onClick={() => navigate("/bingo")} whileTap={{ y: 5 }}>
           大
