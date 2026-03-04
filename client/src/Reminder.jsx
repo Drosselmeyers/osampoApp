@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { AuthContextConsumer } from "./contexts/AuthContexts";
+import { NavBar } from "./NavBar";
 import "./Reminder.css";
 
 export const Reminder = () => {
@@ -76,6 +77,7 @@ export const Reminder = () => {
   // 5. 返り値構築
   return (
     <div className="reminder-container">
+      <NavBar />
       <h2>リマインダー</h2>
 
       <div className="reminder-content">
