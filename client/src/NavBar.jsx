@@ -39,8 +39,8 @@ export const NavBar = () => {
           <Link
             to="/"
             style={{
-              color: "white",
-              fontWeight: "500",
+              color: "black",
+              fontWeight: "bold",
             }}
           >
             ホーム(Bingo)
@@ -50,8 +50,8 @@ export const NavBar = () => {
           <Link
             to="/post"
             style={{
-              color: "white",
-              fontWeight: "500",
+              color: "black",
+              fontWeight: "bold",
             }}
           >
             投稿
@@ -61,8 +61,8 @@ export const NavBar = () => {
           <Link
             to="/sampo"
             style={{
-              color: "white",
-              fontWeight: "500",
+              color: "black",
+              fontWeight: "bold",
             }}
           >
             お散歩
@@ -72,8 +72,8 @@ export const NavBar = () => {
           <Link
             to="/profile"
             style={{
-              color: "white",
-              fontWeight: "500",
+              color: "black",
+              fontWeight: "bold",
             }}
           >
             プロフィール
@@ -83,8 +83,8 @@ export const NavBar = () => {
           <button
             onClick={handleLogout}
             style={{
-              color: "white",
-              fontWeight: "500",
+              color: "black",
+              fontWeight: "bold",
               background: "none",
               cursor: "pointer",
               fontSize: "1rem",
