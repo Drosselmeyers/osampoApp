@@ -79,6 +79,17 @@ export const NavBar = () => {
             プロフィール
           </Link>
         </li>
+        <li>
+          <Link
+            to="/reminder"
+            style={{
+              color: "black",
+              fontWeight: "bold",
+            }}
+          >
+            リマインダー
+          </Link>
+        </li>
         <li style={{ marginLeft: "auto" }}>
           <button
             onClick={handleLogout}

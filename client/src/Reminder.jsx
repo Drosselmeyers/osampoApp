@@ -68,7 +68,6 @@ export const Reminder = () => {
     fetchReminder();
   }, [loginUser]);
 
-  
   // 4. ローディング表示
   if (loading) {
     return <div>読み込み中...</div>;
@@ -76,30 +75,32 @@ export const Reminder = () => {
 
   // 5. 返り値構築
   return (
-    <div className="reminder-container">
+    <>
       <NavBar />
-      <h2>リマインダー</h2>
+      <div className="reminder-container">
+        <h2>リマインダー</h2>
 
-      <div className="reminder-content">
-        <button onClick={handleSetReminder}>
-          {reminderData ? "更新" : "設定"}
-        </button>
+        <div className="reminder-content">
+          <button onClick={handleSetReminder}>
+            {reminderData ? "更新" : "設定"}
+          </button>
 
-        {reminderData && (
-          <div className="reminder-info">
-            <p>
-              最終設定日時:
-              {new Date(reminderData.base_time).toLocaleString("ja-JP", {
-                timeZone: "Asia/Tokyo",
-              })}
-            </p>
-          </div>
+          {reminderData && (
+            <div className="reminder-info">
+              <p>
+                最終設定日時:
+                {new Date(reminderData.base_time).toLocaleString("ja-JP", {
+                  timeZone: "Asia/Tokyo",
+                })}
+              </p>
+            </div>
+          )}
+        </div>
+
+        {reminderData && reminderData.shouldRemind && (
+          <p className="reminder-alert">お散歩に行きましょう！</p>
         )}
       </div>
-
-      {reminderData && reminderData.shouldRemind && (
-        <p className="reminder-alert">お散歩に行きましょう！</p>
-      )}
-    </div>
+    </>
   );
 };
