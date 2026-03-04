@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { AuthContextConsumer } from "./contexts/AuthContexts";
+import "./Reminder.css";
 
 export const Reminder = () => {
   // 1. 状態管理
@@ -74,23 +75,28 @@ export const Reminder = () => {
 
   // 5. 返り値構築
   return (
-    <div>
-      <h1>Reminder</h1>
-      
-      <div>
+    <div className="reminder-container">
+      <h1>リマインダー</h1>
+
+      <div className="reminder-content">
         <button onClick={handleSetReminder}>
           {reminderData ? "更新" : "設定"}
         </button>
-        
+
         {reminderData && (
-          <div>
-            <p>最終設定時刻: {reminderData.base_time}</p>
+          <div className="reminder-info">
+            <p>
+              最終設定日時:
+              {new Date(reminderData.base_time).toLocaleString("ja-JP", {
+                timeZone: "Asia/Tokyo",
+              })}
+            </p>
           </div>
         )}
       </div>
 
       {reminderData && reminderData.shouldRemind && (
-        <p>お散歩に行きましょう！</p>
+        <p className="reminder-alert">お散歩に行きましょう！</p>
       )}
     </div>
   );
