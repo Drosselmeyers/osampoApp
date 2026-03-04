@@ -77,15 +77,20 @@ export const Reminder = () => {
   return (
     <div className="reminder-container">
       <h1>リマインダー</h1>
-      
+
       <div className="reminder-content">
         <button onClick={handleSetReminder}>
           {reminderData ? "更新" : "設定"}
         </button>
-        
+
         {reminderData && (
           <div className="reminder-info">
-            <p>最終設定時刻: {reminderData.base_time}</p>
+            <p>
+              最終設定日時:
+              {new Date(reminderData.base_time).toLocaleString("ja-JP", {
+                timeZone: "Asia/Tokyo",
+              })}
+            </p>
           </div>
         )}
       </div>
