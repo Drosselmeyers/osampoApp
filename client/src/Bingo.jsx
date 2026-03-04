@@ -219,8 +219,8 @@ export const Bingo = () => {
           >
             <img
               className="bingo-image"
-              width={130}
-              height={130}
+              width={115}
+              height={115}
               src={`/${obj.src}.jpg`}
               alt="画像"
             />

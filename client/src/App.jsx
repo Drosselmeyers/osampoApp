@@ -9,7 +9,7 @@ import { Profile } from "./Profile";
 import { PostPage } from "./PostPage";
 import { SampoPage } from "./sampoPage";
 import { SmallBingo } from "./SmallBingo";
-import { Reminder} from "./Reminder";
+import { Reminder } from "./Reminder";
 
 function App() {
   return (
@@ -18,7 +18,14 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/profile" element={<Profile />} />
-        <Route path="/" element={<Bingo />}></Route>
+        <Route
+          path="/"
+          element={
+            <PrivateRoute>
+              <Bingo />
+            </PrivateRoute>
+          }
+        ></Route>
         <Route
           path="/post"
           element={
@@ -28,8 +35,22 @@ function App() {
           }
         ></Route>
         <Route path="*" element={<Navigate to="/" replace />} />
-        <Route path="/sampo" element={<SampoPage />} />
-        <Route path="/smallBingo" element={<SmallBingo />} />
+        <Route
+          path="/sampo"
+          element={
+            <PrivateRoute>
+              <SampoPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/smallBingo"
+          element={
+            <PrivateRoute>
+              <SmallBingo />
+            </PrivateRoute>
+          }
+        />
         <Route path="/reminder" element={<Reminder />} />
       </Routes>
     </AuthContextProvider>
