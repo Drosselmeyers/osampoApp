@@ -3,6 +3,7 @@ import { motion } from "motion/react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import "./Bingo.css";
+import { NavBar } from "./NavBar";
 
 export const Bingo = () => {
   const [bingoList, setBingoList] = useState([]);
@@ -198,6 +199,7 @@ export const Bingo = () => {
 
   return (
     <>
+      <NavBar />
       <div className="bingo-top">
         <motion.button
           onClick={() => navigate("/smallBingo")}

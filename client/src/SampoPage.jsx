@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { useState } from "react";
 import { AuthContextConsumer } from "./contexts/AuthContexts";
-import { useNavigate } from "react-router-dom";
+import { NavBar } from "./NavBar";
+import { motion } from "motion/react";
+import "./SampoPage.css";
 
 export const SampoPage = () => {
   const { loginUser } = AuthContextConsumer();
@@ -9,7 +11,6 @@ export const SampoPage = () => {
   const [click, setClick] = useState(false);
   const [timerId, setTimerId] = useState("");
   const [text, setText] = useState("");
-  const navigate = useNavigate();
 
   const timeTextMaker = (seconds) => {
     const hour = Math.floor(seconds / 3600);
@@ -75,10 +76,6 @@ export const SampoPage = () => {
     clearInterval(timerId);
     setClick(!click);
   };
-  const moveBingo = () => {
-    const isMove = window.confirm("timerを一時停止します。");
-    if (isMove) navigate("/bingo");
-  };
   useEffect(() => {
     setText(timeTextMaker(second));
     localStorage.setItem("time", timeTextMaker(second));
@@ -100,17 +97,36 @@ export const SampoPage = () => {
 
   return (
     <div>
+      <NavBar />
       <h1>osampo timer</h1>
+      <div className="sampo-anime-container">
+        <h2
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="sampo-timer-text"
+        >
+          {text}
+        </h2>
+      </div>
       {click ? (
-        <button onClick={stopTimer}>stop</button>
+        <motion.button
+          whileTap={{ y: 10 }}
+          transition={{ direction: 1 }}
+          className="sampo-timer-button-stop"
+          onClick={stopTimer}
+        >
+          STOP
+        </motion.button>
       ) : (
-        <button onClick={startTimer} className="sampo-timer-button">
-          散歩を始める
-        </button>
+        <motion.button
+          whileTap={{ y: 10 }}
+          transition={{ direction: 1 }}
+          onClick={startTimer}
+          className="sampo-timer-button-start"
+        >
+          START
+        </motion.button>
       )}
-      <h2>{text}</h2>
-      <button onClick={moveBingo}>ビンゴページ</button>
-      <button onClick={() => console.log(text)}>散歩終了</button>
     </div>
   );
 };

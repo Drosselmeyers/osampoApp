@@ -21,9 +21,9 @@ function App() {
         <Route
           path="/"
           element={
-            <PrivateRoute>
-              <Bingo />
-            </PrivateRoute>
+            // <PrivateRoute>
+            <Bingo />
+            // </PrivateRoute>
           }
         ></Route>
         <Route

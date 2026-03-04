@@ -1,0 +1,43 @@
+.sampo-timer-button-start {
+  padding: 20px 100px;
+  border: none;
+  box-shadow: 5px 5px 15px -5px #363636;
+  border-radius: 5px;
+  background-color: #f2c057;
+  color: black;
+  font-weight: bold;
+  font-size: 15px;
+  margin-top: 20px;
+}
+.sampo-timer-button-stop {
+  padding: 20px 100px;
+  border: none;
+  box-shadow: 5px 5px 15px -5px #363636;
+  border-radius: 5px;
+  background-color: #d13525;
+  color: white;
+  font-weight: bold;
+  font-size: 15px;
+  margin-top: 20px;
+}
+.sampo-anime-container {
+  background-color: #363636;
+  padding: 30px;
+  border-radius: 5px;
+}
+.sampo-timer-text {
+  font-size: 60px;
+  animation: opa 1s linear infinite;
+}
+
+@keyframes opa {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
