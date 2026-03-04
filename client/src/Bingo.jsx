@@ -183,7 +183,7 @@ export const Bingo = () => {
 
   /* clickが変わるたびに列が揃っているかの精査 */
   useEffect(() => {
-    const testRowBingo = () => {
+    const testBingo = () => {
       if (targetIndex === null) return;
       if (alreadyBingoChecker(testRowCreator(), targetIndex)) return;
       if (alreadyBingoChecker(testColumnCreator(), targetIndex)) return;
@@ -194,20 +194,13 @@ export const Bingo = () => {
       columnChecker(targetIndex);
       diagonallyChecker(targetIndex);
     };
-    testRowBingo();
+    testBingo();
   }, [targetIndex]);
 
   return (
     <>
       <NavBar />
       <div className="bingo-top">
-        <motion.button
-          onClick={() => navigate("/smallBingo")}
-          whileTap={{ y: 5 }}
-        >
-          小
-        </motion.button>
-
         <p className="bingo-count-view">{`ビンゴ点数: ${bingoCount}`}</p>
       </div>
       <div className="bingo-main">
@@ -239,15 +232,13 @@ export const Bingo = () => {
         >
           リセット
         </motion.button>
-        <Link to={"/sampo"}>
-          <motion.button
-            whileTap={{ y: 10 }}
-            transition={{ direction: 1 }}
-            className="bingo-finish-button"
-          >
-            散歩
-          </motion.button>
-        </Link>
+        <motion.button
+          onClick={() => navigate("/smallBingo")}
+          whileTap={{ y: 5 }}
+          className="bingo-change-button"
+        >
+          小
+        </motion.button>
         <motion.button
           whileTap={{ y: 10 }}
           transition={{ direction: 1 }}
