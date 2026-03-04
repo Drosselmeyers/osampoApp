@@ -7,7 +7,7 @@ import { LoginPage } from "./LoginPage";
 import { SignUpPage } from "./SignUpPage";
 import { Profile } from "./Profile";
 import { PostPage } from "./PostPage";
-import { SampoPage } from "./sampoPage";
+import { SampoPage } from "./SampoPage";
 import { SmallBingo } from "./SmallBingo";
 import { Reminder } from "./Reminder";
 
