@@ -76,7 +76,7 @@ export const Reminder = () => {
   // 5. 返り値構築
   return (
     <div className="reminder-container">
-      <h1>リマインダー</h1>
+      <h2>リマインダー</h2>
 
       <div className="reminder-content">
         <button onClick={handleSetReminder}>
