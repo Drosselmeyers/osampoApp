@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import apiClient from "./config/apiClient";
 import { NavBar } from "./NavBar";
+import "./PostPage.css";
 
 export const PostPage = () => {
   const [loading, setLoading] = useState(false);
