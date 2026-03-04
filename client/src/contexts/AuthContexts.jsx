@@ -15,11 +15,17 @@ const AuthContext = createContext();
 export const AuthContextProvider = ({ children }) => {
   // ログインユーザ
   const [loginUser, setLoginUser] = useState();
+  // 認証状態の初期化中フラグ
+  const [loading, setLoading] = useState(true);
 
   // 起動時ログイン処理(既にログインしてる場合, ユーザ設定)
   useEffect(() => {
     // auth初期化時にログインユーザ設定
-    auth.onAuthStateChanged((user) => setLoginUser(user));
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setLoginUser(user);
+      setLoading(false);
+    });
+    return () => unsubscribe();
   }, []);
 
   // Googleログイン式（DBにも自動登録）
@@ -94,6 +100,7 @@ export const AuthContextProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         loginUser,
+        loading,
         loginWithGoogle,
         loginWithEmail,
         signUpWithGoogle,
