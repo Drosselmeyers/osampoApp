@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { AuthContextConsumer } from "./contexts/AuthContexts";
+import { NavBar } from "./NavBar";
+import "./Profile.css";
 
 export const Profile = () => {
   // 1. 状態管理
@@ -91,13 +93,17 @@ export const Profile = () => {
 
   // 5. 返り値構築
   return (
-    <div>
-      <h1>Profile {isNewUser ? "登録" : "更新"}</h1>
-      <p>User ID: {loginUser.uid}</p>
-      <p>Email Address: {loginUser.email}</p>
+    <div className="profile-container">
+      <NavBar />
+      <h2>Profile {isNewUser ? "登録" : "更新"}</h2>
+      
+      <div className="profile-info">
+        <p>User ID: {loginUser.uid}</p>
+        <p>Email Address: {loginUser.email}</p>
+      </div>
 
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className="form-group">
           <p>今の表示名: {displayName}</p>
           <label>表示名</label>
           <input
@@ -109,7 +115,7 @@ export const Profile = () => {
           />
         </div>
 
-        <div>
+        <div className="form-group">
           <p>今のお散歩頻度: {frequency}</p>
           <label>お散歩頻度</label>
           <select

@@ -1,12 +1,12 @@
 .reminder-container {
-  max-width: 400px;
+  max-width: 1280px;
   margin: 50px auto;
   padding: 30px;
   border-radius: 5px;
   background-color: white;
 }
 
-.reminder-container h1 {
+.reminder-container h2 {
   color: #4c3f54;
   font-weight: bold;
   text-align: center;
