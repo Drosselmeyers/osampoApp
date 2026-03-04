@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { AuthContextConsumer } from "./contexts/AuthContexts";
+import { FcGoogle } from "react-icons/fc";
+import "./SignUpPage.css";
 
 export function SignUpPage() {
   const [email, setEmail] = useState("");
@@ -71,9 +73,9 @@ export function SignUpPage() {
 
   return (
     <>
-      <div>
+      <div className="signup-container">
         <h2>新規ユーザー登録</h2>
-        {error && <div>{error}</div>}
+        {error && <div className="signup-error">{error}</div>}
         <form onSubmit={handleSubmit}>
           <div>
             <label htmlFor="email">メールアドレス</label>
@@ -104,13 +106,14 @@ export function SignUpPage() {
         </form>
 
         <div>
-          <hr />
+          <hr className="google-signup-and-login" />
           <button onClick={handleGoogleSignUp} disabled={loading} type="button">
+            <FcGoogle style={{ marginRight: "8px", verticalAlign: "middle" }} />
             Googleで登録＆ログイン
           </button>
         </div>
 
-        <div>
+        <div className="login-link">
           <p>
             既にアカウントをお持ちですか？ <Link to="/login">ログイン</Link>
           </p>
