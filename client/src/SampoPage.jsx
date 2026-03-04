@@ -98,12 +98,15 @@ export const SampoPage = () => {
   return (
     <div>
       <NavBar />
-      <h1>osampo timer</h1>
+      <h1 className="sampo-title">
+        osampo <br />
+        Timer
+      </h1>
       <div className="sampo-anime-container">
         <h2
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          className="sampo-timer-text"
+          className={`sampo-timer-text ${click && "click"}`}
         >
           {text}
         </h2>
@@ -112,7 +115,7 @@ export const SampoPage = () => {
         <motion.button
           whileTap={{ y: 10 }}
           transition={{ direction: 1 }}
-          className="sampo-timer-button-stop"
+          className="sampo-timer-button"
           onClick={stopTimer}
         >
           STOP
@@ -122,7 +125,7 @@ export const SampoPage = () => {
           whileTap={{ y: 10 }}
           transition={{ direction: 1 }}
           onClick={startTimer}
-          className="sampo-timer-button-start"
+          className="sampo-timer-button"
         >
           START
         </motion.button>
