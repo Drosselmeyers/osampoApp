@@ -1,0 +1,24 @@
+.small-bingo-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 5px;
+  height: 770px;
+  width: 800px;
+}
+.small-bingo-container {
+  border: solid 5px #4c3f54;
+  border-radius: 5px;
+}
+
+.small-bingo-title {
+  color: black;
+  background-color: #f2c057;
+  margin: 0px;
+  font-weight: bold;
+  font-size: x-large;
+}
+
+.small-bingo-container.click {
+  opacity: 0.5;
+  background-color: #4c3f54;
+}

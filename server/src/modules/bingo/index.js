@@ -8,5 +8,5 @@ function initBingo(knex) {
   const controller = createBingoController(service);
   return controller;
 }
-initBingo();
+
 module.exports = { initBingo };

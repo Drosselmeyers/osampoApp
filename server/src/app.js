@@ -12,7 +12,10 @@ const { initReminder } = require("./modules/reminder/index");
 const { createRemindersRouter } = require("./routes/reminder");
 const { initBingo } = require("./modules/bingo/index");
 const { createBingoRouter } = require("./routes/bingo");
-const { time } = require("console");
+const { initSmallBingo } = require("./modules/smallBingo");
+const { createSmallBingoRouter } = require("./routes/smallBingo");
+const { initTimer } = require("./modules/timer/index");
+const { createTimerRouter } = require("./routes/timer");
 
 function buildApp() {
   const app = express();
@@ -32,32 +35,16 @@ function buildApp() {
 
   const postController = initPost(knex);
   app.use("/api", createPostRouter(postController));
+
   const bingoController = initBingo(knex);
   app.use("/api", createBingoRouter(bingoController));
 
-  app.post("/api/timer/:userId", async (req, res) => {
-    const userId = req.params.userId;
-    const body = req.body;
-    await knex("timer").insert({
-      user_id: userId,
-      time: `${body.hour}:${body.minute}:${body.second}`,
-    });
-    return res.send({ message: "post" });
-  });
-  app.get("/api/timer/:userId", async (req, res) => {
-    const userId = req.params.userId;
-    const targetTimer = await knex("timer").where("user_id", userId);
-    return res.send(targetTimer);
-  });
-  app.patch("/api/timer/:timerId", async (req, res) => {
-    const timerId = req.params.timerId;
-    const body = req.body;
-    const patchTimer = await knex("timer")
-      .where("timer_id", timerId)
-      .update({ time: `${body.hour}:${body.minute}:${body.second}` })
-      .returning("*");
-    return res.send(patchTimer);
-  });
+  const smallBingoController = initSmallBingo(knex);
+  app.use("/api", createSmallBingoRouter(smallBingoController));
+
+  const timerController = initTimer(knex);
+  app.use("/api", createTimerRouter(timerController));
+
   // SPAフォールバック: すべてのAPI以外のルートをindex.htmlに
   app.get(/^(?!\/api).*/, (req, res) => {
     res.sendFile(path.join(__dirname, "../public/index.html"));
