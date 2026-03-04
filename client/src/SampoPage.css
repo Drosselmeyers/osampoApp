@@ -1,6 +1,15 @@
+.sampo-main-container {
+  background-color: white;
+  padding: 20px;
+  border-radius: 5px;
+  width: 600px;
+  max-height: 768px;
+}
+
 .sampo-title {
   font-size: 100px;
-  margin: 50px;
+  margin: 25px;
+  color: black;
 }
 
 .sampo-timer-button {

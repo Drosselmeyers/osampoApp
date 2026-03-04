@@ -96,40 +96,42 @@ export const SampoPage = () => {
   }, []);
 
   return (
-    <div>
+    <>
       <NavBar />
-      <h1 className="sampo-title">
-        osampo <br />
-        Timer
-      </h1>
-      <div className="sampo-anime-container">
-        <h2
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className={`sampo-timer-text ${click && "click"}`}
-        >
-          {text}
-        </h2>
+      <div className="sampo-main-container">
+        <h1 className="sampo-title">
+          osampo <br />
+          Timer
+        </h1>
+        <div className="sampo-anime-container">
+          <h2
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className={`sampo-timer-text ${click && "click"}`}
+          >
+            {text}
+          </h2>
+        </div>
+        {click ? (
+          <motion.button
+            whileTap={{ y: 10 }}
+            transition={{ direction: 1 }}
+            className="sampo-timer-button"
+            onClick={stopTimer}
+          >
+            STOP
+          </motion.button>
+        ) : (
+          <motion.button
+            whileTap={{ y: 10 }}
+            transition={{ direction: 1 }}
+            onClick={startTimer}
+            className="sampo-timer-button"
+          >
+            START
+          </motion.button>
+        )}
       </div>
-      {click ? (
-        <motion.button
-          whileTap={{ y: 10 }}
-          transition={{ direction: 1 }}
-          className="sampo-timer-button"
-          onClick={stopTimer}
-        >
-          STOP
-        </motion.button>
-      ) : (
-        <motion.button
-          whileTap={{ y: 10 }}
-          transition={{ direction: 1 }}
-          onClick={startTimer}
-          className="sampo-timer-button"
-        >
-          START
-        </motion.button>
-      )}
-    </div>
+    </>
   );
 };
