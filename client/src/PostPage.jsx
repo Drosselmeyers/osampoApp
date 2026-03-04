@@ -143,22 +143,17 @@ export const PostPage = () => {
   return (
     <>
       <NavBar />
-      <div>
+      <div className="post-container">
         <h2>投稿を作成</h2>
+        {error && <div className="post-error">{error}</div>}
         <div>
           <textarea
             placeholder="お散歩のコメントを自由に入力"
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
             rows={5}
-            style={{
-              width: "100%",
-              marginBottom: "10px",
-              borderRadius: "8px",
-              resize: "none",
-            }}
           />
-          <button onClick={handleUpload} style={{ marginRight: "8px" }}>
+          <button onClick={handleUpload} className="upload-button">
             {uploading ? "アップロード中..." : "画像をアップロード"}
           </button>
           <input
@@ -169,7 +164,7 @@ export const PostPage = () => {
             onChange={handleChangeFile}
           />
           {imageUrl && (
-            <div>
+            <div className="image-preview">
               <p>プレビュー:</p>
               <img src={imageUrl} />
               <button onClick={handleCancelImage}>画像を選びなおす</button>
@@ -182,34 +177,24 @@ export const PostPage = () => {
             投稿する
           </button>
         </div>
-        <hr></hr>
+        <hr className="post-hr"></hr>
         <h2>投稿一覧</h2>
-        <button onClick={handleReflesh} style={{ marginBottom: "8px" }}>
+        <button onClick={handleReflesh} className="refresh-button">
           更新
         </button>
-        {loading && <p>Loading...</p>}
-        {error && <p>{error}</p>}
-        {!loading && posts.length === 0 && <p>投稿がありません</p>}
-        {!loading &&
-          posts.map((post) => (
-            <div
-              key={post.id}
-              style={{
-                border: "1px solid #ddd",
-                borderRadius: "8px",
-                padding: "16px",
-                marginBottom: "16px",
-              }}
-            >
-              <p>{post.caption}</p>
-              {post.image_url && (
-                <img
-                  src={post.image_url}
-                  style={{ maxWidth: "100%", borderRadius: "4px" }}
-                />
-              )}
-            </div>
-          ))}
+        <div className="posts-list">
+          {loading && <p className="post-loading">Loading...</p>}
+          {!loading && posts.length === 0 && (
+            <p className="no-posts">投稿がありません</p>
+          )}
+          {!loading &&
+            posts.map((post) => (
+              <div key={post.id} className="post-card">
+                <p>{post.caption}</p>
+                {post.image_url && <img src={post.image_url} />}
+              </div>
+            ))}
+        </div>
       </div>
     </>
   );
