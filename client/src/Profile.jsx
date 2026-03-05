@@ -93,45 +93,47 @@ export const Profile = () => {
 
   // 5. 返り値構築
   return (
-    <div className="profile-container">
+    <>
       <NavBar />
-      <h2>Profile {isNewUser ? "登録" : "更新"}</h2>
-      
-      <div className="profile-info">
-        <p>User ID: {loginUser.uid}</p>
-        <p>Email Address: {loginUser.email}</p>
+      <div className="profile-container">
+        <h2>Profile {isNewUser ? "登録" : "更新"}</h2>
+
+        <div className="profile-info">
+          <p>User ID: {loginUser.uid}</p>
+          <p>Email Address: {loginUser.email}</p>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <p>今の表示名: {displayName}</p>
+            <label>表示名</label>
+            <input
+              type="text"
+              value={displayName}
+              onChange={(event) => setDisplayName(event.target.value)}
+              placeholder="Enter your display name"
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <p>今のお散歩頻度: {frequency}</p>
+            <label>お散歩頻度</label>
+            <select
+              value={frequency}
+              onChange={(event) => setFrequency(event.target.value)}
+              required
+            >
+              <option value="1">1日</option>
+              <option value="3">3日</option>
+              <option value="5">5日</option>
+              <option value="7">7日</option>
+            </select>
+          </div>
+
+          <button type="submit">{isNewUser ? "登録" : "更新"}</button>
+        </form>
       </div>
-
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <p>今の表示名: {displayName}</p>
-          <label>表示名</label>
-          <input
-            type="text"
-            value={displayName}
-            onChange={(event) => setDisplayName(event.target.value)}
-            placeholder="Enter your display name"
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <p>今のお散歩頻度: {frequency}</p>
-          <label>お散歩頻度</label>
-          <select
-            value={frequency}
-            onChange={(event) => setFrequency(event.target.value)}
-            required
-          >
-            <option value="1">1日</option>
-            <option value="3">3日</option>
-            <option value="5">5日</option>
-            <option value="7">7日</option>
-          </select>
-        </div>
-
-        <button type="submit">{isNewUser ? "登録" : "更新"}</button>
-      </form>
-    </div>
+    </>
   );
 };

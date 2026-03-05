@@ -24,6 +24,7 @@ export const NavBar = () => {
         backgroundColor: "#f2c057",
         padding: "1rem",
         marginBottom: "1rem",
+        borderRadius: "5px",
       }}
     >
       <ul
