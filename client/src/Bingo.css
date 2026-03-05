@@ -2,15 +2,15 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   gap: 5px;
+  max-height: 768px;
 }
 .bingo-top {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 15px;
 }
 
-.bingo-top button {
-  padding: 5px 100px;
+.bingo-change-button {
+  padding: 5px 60px;
   border: none;
   box-shadow: 5px 5px 15px -5px #363636;
   border-radius: 5px;

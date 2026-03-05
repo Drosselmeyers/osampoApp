@@ -17,19 +17,15 @@ export const Profile = () => {
 
     const token = await loginUser.getIdToken();
 
-    const url = isNewUser 
-      ? "/api/profiles" 
-      : `/api/profiles/${loginUser.uid}`;
+    const url = isNewUser ? "/api/profiles" : `/api/profiles/${loginUser.uid}`;
 
-    const method = isNewUser 
-      ? "POST" 
-      : "PUT";
+    const method = isNewUser ? "POST" : "PUT";
 
     const response = await fetch(url, {
       method: method,
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({
         user_id: loginUser.uid,
@@ -58,7 +54,7 @@ export const Profile = () => {
         const res = await fetch(`/api/profiles/${loginUser.uid}`, {
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
         });
 

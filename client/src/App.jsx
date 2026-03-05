@@ -7,7 +7,7 @@ import { LoginPage } from "./LoginPage";
 import { SignUpPage } from "./SignUpPage";
 import { Profile } from "./Profile";
 import { PostPage } from "./PostPage";
-import { SampoPage } from "./sampoPage";
+import { SampoPage } from "./SampoPage";
 import { SmallBingo } from "./SmallBingo";
 import { Reminder } from "./Reminder";
 
@@ -17,15 +17,22 @@ function App() {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/profile" element={<Profile />} />
         <Route
           path="/"
           element={
-            // <PrivateRoute>
-            <Bingo />
-            // </PrivateRoute>
+            <PrivateRoute>
+              <Bingo />
+            </PrivateRoute>
           }
         ></Route>
+        <Route
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <Profile />
+            </PrivateRoute>
+          }
+        />
         <Route
           path="/post"
           element={
@@ -34,7 +41,6 @@ function App() {
             </PrivateRoute>
           }
         ></Route>
-        <Route path="*" element={<Navigate to="/" replace />} />
         <Route
           path="/sampo"
           element={
@@ -51,7 +57,15 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route path="/reminder" element={<Reminder />} />
+        <Route
+          path="/reminder"
+          element={
+            <PrivateRoute>
+              <Reminder />
+            </PrivateRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </AuthContextProvider>
   );

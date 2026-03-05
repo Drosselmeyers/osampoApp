@@ -68,7 +68,6 @@ export const Reminder = () => {
     fetchReminder();
   }, [loginUser]);
 
-  
   // 4. ローディング表示
   if (loading) {
     return <div>読み込み中...</div>;

@@ -11,6 +11,7 @@ export const SampoPage = () => {
   const [click, setClick] = useState(false);
   const [timerId, setTimerId] = useState("");
   const [text, setText] = useState("");
+  const [login, setLogin] = useState(false);
 
   const timeTextMaker = (seconds) => {
     const hour = Math.floor(seconds / 3600);
@@ -76,6 +77,20 @@ export const SampoPage = () => {
     clearInterval(timerId);
     setClick(!click);
   };
+  const resetTimer = async () => {
+    const isReset = window.confirm("タイマーをリセットしますか？");
+    if (isReset) {
+      const targetTimer = await searchTimer();
+      await fetch("/api/sampo/" + targetTimer.timer_id, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ time: 0 }),
+      });
+      localStorage.setItem("time", timeTextMaker(0));
+      setText(timeTextMaker(0));
+      setSecond(0);
+    }
+  };
   useEffect(() => {
     setText(timeTextMaker(second));
     localStorage.setItem("time", timeTextMaker(second));
@@ -93,43 +108,65 @@ export const SampoPage = () => {
       }
     };
     get();
+    setTimeout(() => {
+      setLogin(true);
+    }, 1000);
   }, []);
 
   return (
-    <div>
-      <NavBar />
-      <h1 className="sampo-title">
-        osampo <br />
-        Timer
-      </h1>
-      <div className="sampo-anime-container">
-        <h2
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className={`sampo-timer-text ${click && "click"}`}
-        >
-          {text}
-        </h2>
-      </div>
-      {click ? (
-        <motion.button
-          whileTap={{ y: 10 }}
-          transition={{ direction: 1 }}
-          className="sampo-timer-button"
-          onClick={stopTimer}
-        >
-          STOP
-        </motion.button>
+    <>
+      {login ? (
+        <>
+          <NavBar />
+          <div className="sampo-main-container">
+            <h1 className="sampo-title">
+              osampo <br />
+              Timer
+            </h1>
+            <div className="sampo-anime-container">
+              <h2
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className={`sampo-timer-text ${click && "click"}`}
+              >
+                {text}
+              </h2>
+            </div>
+            <div className="sampo-button-container">
+              {click ? (
+                <motion.button
+                  whileTap={{ y: 10 }}
+                  transition={{ direction: 1 }}
+                  className="sampo-timer-button"
+                  onClick={stopTimer}
+                >
+                  STOP
+                </motion.button>
+              ) : (
+                <motion.button
+                  whileTap={{ y: 10 }}
+                  transition={{ direction: 1 }}
+                  onClick={startTimer}
+                  className="sampo-timer-button"
+                >
+                  START
+                </motion.button>
+              )}
+              <motion.button
+                whileTap={{ y: 10 }}
+                transition={{ direction: 1 }}
+                className="sampo-timer-button"
+                onClick={resetTimer}
+                style={{ backgroundColor: "#D13525" }}
+              >
+                RESET
+              </motion.button>
+            </div>
+          </div>
+        </>
       ) : (
-        <motion.button
-          whileTap={{ y: 10 }}
-          transition={{ direction: 1 }}
-          onClick={startTimer}
-          className="sampo-timer-button"
-        >
-          START
-        </motion.button>
+        <div>読み込み中..</div>
       )}
-    </div>
+    </>
   );
 };
